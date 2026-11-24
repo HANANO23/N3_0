@@ -5254,14 +5254,16 @@
         banner.className = "verdict-banner revealed";
         titleEl.textContent = "정답 및 상세 해설을 확인하세요";
       } else if (normRef && normUser && normUser === normRef) {
-        banner.className = "verdict-banner match";
-        titleEl.textContent = "발음이 일치합니다! (정답 처리됨)";
         setCardStatus(card.uid, "correct", userInput);
-      } else {
+        toast("정답! 다음 문항으로 이동합니다.");
+        setTimeout(() => moveCard(1), 250);
+        return;
+     } else {
         banner.className = "verdict-banner mismatch";
         titleEl.textContent = "발음 차이가 있습니다 — 아래 해설과 자가 채점을 확인하세요";
         setCardStatus(card.uid, "wrong", userInput);
       }
+      
 
       document.getElementById("expGrammarMeaning").textContent =
         `문형: ${card.pattern}\n핵심 뜻: ${card.meaning}`;
@@ -5451,7 +5453,8 @@
       const card = getCurrentCard();
       if (!card) return;
       setCardStatus(card.uid, "correct", document.getElementById("pronInput").value);
-      toast("정답으로 처리했습니다.");
+      toast("정답으로 처리하고 다음 문항으로 이동합니다.");
+      moveCard(1);
     });
 
     document.getElementById("markWrongBtn").addEventListener("click", () => {
